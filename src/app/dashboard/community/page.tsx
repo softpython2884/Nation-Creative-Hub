@@ -1,32 +1,33 @@
+
 "use client";
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"; // Removed AvatarImage
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from '@/components/ui/button';
-import { MessageCircle, UserPlus, Search } from 'lucide-react';
-import Image from 'next/image';
+import { MessageCircle, UserPlus, Search, UserCircle2 } from 'lucide-react'; // Added UserCircle2
+// Removed Image from 'next/image' as it's no longer used
 
 interface CommunityMember {
   id: string;
   name: string;
   role: 'Composer' | 'Builder' | 'Designer' | 'Developer' | 'Writer';
-  avatarUrl: string;
+  // avatarUrl: string; // No longer needed if we always show icon
   bio: string;
   skills: string[];
   joinedDate: string;
 }
 
 const initialMembers: CommunityMember[] = [
-  { id: '1', name: 'Elara Moonwhisper', role: 'Composer', avatarUrl: 'https://placehold.co/100x100.png?text=EM', bio: 'Crafting immersive soundscapes and epic scores for Nation Quest.', skills: ['Orchestration', 'Sound Design', 'MIDI'], joinedDate: '2023-05-15', },
-  { id: '2', name: 'Grom Stonebeard', role: 'Builder', avatarUrl: 'https://placehold.co/100x100.png?text=GS', bio: 'Architect of grand castles and intricate dungeons. Loves a good challenge.', skills: ['Level Design', '3D Modeling', 'Texturing'], joinedDate: '2022-11-01', },
-  { id: '3', name: 'Lyra Starweaver', role: 'Designer', avatarUrl: 'https://placehold.co/100x100.png?text=LS', bio: 'Visualizing the world of Nation Quest, from character concepts to UI.', skills: ['Concept Art', 'UI/UX', 'Illustration'], joinedDate: '2023-01-20', },
-  { id: '4', name: 'Jax Coderius', role: 'Developer', avatarUrl: 'https://placehold.co/100x100.png?text=JC', bio: 'Bringing game mechanics to life with clean and efficient code.', skills: ['C++', 'Game Logic', 'AI Programming'], joinedDate: '2022-08-10', },
-  { id: '5', name: 'Faelan Quillstrike', role: 'Writer', avatarUrl: 'https://placehold.co/100x100.png?text=FQ', bio: 'Weaving tales and lore that breathe life into Nation Quest.', skills: ['Storytelling', 'Dialogue', 'Worldbuilding'], joinedDate: '2023-03-05', },
-  { id: '6', name: 'Seraphina Forgefire', role: 'Builder', avatarUrl: 'https://placehold.co/100x100.png?text=SF', bio: 'Expert in crafting unique environmental assets and props.', skills: ['Asset Creation', 'Sculpting', 'Optimization'], joinedDate: '2023-09-12', },
+  { id: '1', name: 'Elara Moonwhisper', role: 'Composer', bio: 'Crafting immersive soundscapes and epic scores for Nation Quest.', skills: ['Orchestration', 'Sound Design', 'MIDI'], joinedDate: '2023-05-15', },
+  { id: '2', name: 'Grom Stonebeard', role: 'Builder', bio: 'Architect of grand castles and intricate dungeons. Loves a good challenge.', skills: ['Level Design', '3D Modeling', 'Texturing'], joinedDate: '2022-11-01', },
+  { id: '3', name: 'Lyra Starweaver', role: 'Designer', bio: 'Visualizing the world of Nation Quest, from character concepts to UI.', skills: ['Concept Art', 'UI/UX', 'Illustration'], joinedDate: '2023-01-20', },
+  { id: '4', name: 'Jax Coderius', role: 'Developer', bio: 'Bringing game mechanics to life with clean and efficient code.', skills: ['C++', 'Game Logic', 'AI Programming'], joinedDate: '2022-08-10', },
+  { id: '5', name: 'Faelan Quillstrike', role: 'Writer', bio: 'Weaving tales and lore that breathe life into Nation Quest.', skills: ['Storytelling', 'Dialogue', 'Worldbuilding'], joinedDate: '2023-03-05', },
+  { id: '6', name: 'Seraphina Forgefire', role: 'Builder', bio: 'Expert in crafting unique environmental assets and props.', skills: ['Asset Creation', 'Sculpting', 'Optimization'], joinedDate: '2023-09-12', },
 ];
 
 function MemberCard({ member }: { member: CommunityMember }) {
@@ -42,8 +43,9 @@ function MemberCard({ member }: { member: CommunityMember }) {
     <Card className="shadow-sm hover:shadow-xl transition-shadow duration-300 flex flex-col">
       <CardHeader className="flex flex-col items-center text-center">
         <Avatar className="w-24 h-24 mb-4 border-2 border-primary">
-          <AvatarImage src={member.avatarUrl} alt={member.name} data-ai-hint="profile picture" />
-          <AvatarFallback>{member.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+          <AvatarFallback>
+            <UserCircle2 className="w-16 h-16 text-primary" />
+          </AvatarFallback>
         </Avatar>
         <CardTitle className="text-xl">{member.name}</CardTitle>
         <Badge variant="outline" className={`mt-1 ${roleColors[member.role]}`}>{member.role}</Badge>

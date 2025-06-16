@@ -1,10 +1,11 @@
-import Image from "next/image";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { CheckCircle, Users, ListChecks, LayoutDashboard, Workflow } from "lucide-react";
+import { CheckCircle, Users, ListChecks, LayoutDashboard, Workflow, Rocket } from "lucide-react"; // Added Rocket, Users is already available
 import { Logo } from "@/components/common/logo";
 import { ThemeToggle } from "@/components/common/theme-toggle";
+// import Image from "next/image"; // Removed Image import
 
 export default function HomePage() {
   const features = [
@@ -73,16 +74,8 @@ export default function HomePage() {
                 <Link href="#features">Learn More</Link>
               </Button>
             </div>
-            <div className="mt-16 relative aspect-[2/1] max-w-4xl mx-auto rounded-xl overflow-hidden shadow-2xl">
-              <Image
-                src="https://placehold.co/1200x600.png"
-                alt="Nation Quest Platform Showcase"
-                layout="fill"
-                objectFit="cover"
-                priority
-                data-ai-hint="fantasy landscape"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent"></div>
+            <div className="mt-16 relative aspect-[2/1] max-w-4xl mx-auto rounded-xl overflow-hidden shadow-2xl bg-muted/20 flex items-center justify-center">
+              <Rocket className="w-24 h-24 sm:w-32 md:w-48 text-primary" />
             </div>
           </div>
         </section>
@@ -147,14 +140,8 @@ export default function HomePage() {
                   </Button>
                 </div>
               </div>
-              <div className="relative aspect-square rounded-xl overflow-hidden shadow-lg">
-                 <Image
-                    src="https://placehold.co/600x600.png"
-                    alt="Community Collaboration"
-                    layout="fill"
-                    objectFit="cover"
-                    data-ai-hint="diverse team"
-                  />
+              <div className="relative aspect-square rounded-xl overflow-hidden shadow-lg bg-muted/20 flex items-center justify-center">
+                 <Users className="w-24 h-24 sm:w-32 md:w-48 text-primary" />
               </div>
             </div>
           </div>

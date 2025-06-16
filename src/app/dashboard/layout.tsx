@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -18,6 +19,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Logo } from "@/components/common/logo";
 import { navItems } from "@/components/layout/sidebar-nav-items";
 import { DashboardHeader } from "@/components/layout/dashboard-header";
+import { HelpCircle } from "lucide-react"; // Added for consistency if HelpCircle is intended icon
 
 export default function DashboardLayout({
   children,
@@ -37,7 +39,7 @@ export default function DashboardLayout({
               <SidebarTrigger className="group-data-[collapsible=icon]:hidden" />
             </div>
           </SidebarHeader>
-          <SidebarContent asChild>
+          <SidebarContent> {/* Removed asChild prop */}
             <ScrollArea className="h-full">
               <SidebarMenu className="p-2">
                 {navItems.map((item) => (
@@ -58,10 +60,9 @@ export default function DashboardLayout({
             </ScrollArea>
           </SidebarContent>
           <SidebarFooter className="p-2 border-t">
-            {/* Placeholder for potential footer items, like quick help or logout */}
             <Button variant="ghost" className="w-full justify-start group-data-[collapsible=icon]:justify-center">
                 <span className="group-data-[collapsible=icon]:hidden">Help Center</span>
-                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-help-circle h-5 w-5 hidden group-data-[collapsible=icon]:block"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg>
+                <HelpCircle className="lucide lucide-help-circle h-5 w-5 hidden group-data-[collapsible=icon]:block"/>
             </Button>
           </SidebarFooter>
         </Sidebar>

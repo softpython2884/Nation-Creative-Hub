@@ -1,6 +1,7 @@
+
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"; // Removed AvatarImage
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,7 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { ThemeToggle } from "@/components/common/theme-toggle";
-import { Save, UserCircle2, Palette, Lock } from "lucide-react";
+import { Save, UserCircle2, Palette, Lock } from "lucide-react"; // UserCircle2 is already imported
 
 export default function SettingsPage() {
   // Mock user data
@@ -17,7 +18,7 @@ export default function SettingsPage() {
     name: "Elara Moonwhisper",
     email: "elara.m@nationquest.dev",
     bio: "Crafting immersive soundscapes and epic scores for Nation Quest.",
-    avatarUrl: "https://placehold.co/100x100.png?text=EM",
+    // avatarUrl: "https://placehold.co/100x100.png?text=EM", // No longer needed
     prefersDarkTheme: true,
     emailNotifications: {
       taskUpdates: true,
@@ -45,8 +46,9 @@ export default function SettingsPage() {
             <CardContent className="space-y-4">
               <div className="flex flex-col items-center space-y-3">
                 <Avatar className="h-24 w-24 border-2 border-primary">
-                  <AvatarImage src={user.avatarUrl} alt={user.name} data-ai-hint="user portrait" />
-                  <AvatarFallback>{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                  <AvatarFallback>
+                    <UserCircle2 className="w-16 h-16 text-primary" />
+                  </AvatarFallback>
                 </Avatar>
                 <Button variant="outline" size="sm">Change Avatar</Button>
               </div>

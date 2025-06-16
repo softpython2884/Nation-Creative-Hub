@@ -1,11 +1,12 @@
+
 "use client";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { BarChart, LineChart, PieChart, Users, ListChecks, AlertTriangle, Activity, ArrowRight } from "lucide-react";
+import { BarChart, LineChart, PieChartIcon, Users, ListChecks, Activity, ArrowRight, Lightbulb } from "lucide-react"; // Added Lightbulb, changed PieChart to PieChartIcon
 import Link from "next/link";
-import Image from "next/image";
+// import Image from "next/image"; // Removed Image import
 import {
   ChartContainer,
   ChartTooltip,
@@ -162,8 +163,8 @@ export default function DashboardPage() {
           <CardTitle className="text-primary">Project Spotlight: The Azure Glade</CardTitle>
         </CardHeader>
         <CardContent className="grid md:grid-cols-3 gap-4 items-center">
-          <div className="md:col-span-1">
-            <Image src="https://placehold.co/400x300.png" alt="Project Azure Glade" width={400} height={300} className="rounded-md shadow-md" data-ai-hint="fantasy forest"/>
+          <div className="md:col-span-1 w-full h-[200px] md:h-[300px] flex items-center justify-center bg-muted/50 rounded-md shadow-md">
+            <Lightbulb className="w-20 h-20 md:w-24 md:h-24 text-primary" />
           </div>
           <div className="md:col-span-2">
             <p className="text-muted-foreground mb-2">

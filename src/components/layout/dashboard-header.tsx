@@ -1,6 +1,7 @@
+
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"; // Removed AvatarImage
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Bell, Settings, LogOut } from "lucide-react";
+import { Menu, Bell, Settings, LogOut, UserCircle } from "lucide-react"; // Added UserCircle
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/common/theme-toggle";
@@ -72,8 +73,9 @@ export function DashboardHeader({
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src="https://placehold.co/40x40.png" alt="User Avatar" data-ai-hint="user avatar" />
-                  <AvatarFallback>NQ</AvatarFallback>
+                  <AvatarFallback>
+                    <UserCircle className="w-7 h-7 text-primary" />
+                  </AvatarFallback>
                 </Avatar>
                 <span className="sr-only">Toggle user menu</span>
               </Button>

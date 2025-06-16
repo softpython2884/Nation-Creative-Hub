@@ -1,11 +1,12 @@
+
 "use client";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Bell, MessageSquare, Users, ShieldCheck, ExternalLink, Settings2 } from "lucide-react";
-import Image from 'next/image';
+import { Bell, MessageSquare, ShieldCheck, ExternalLink, Settings2 } from "lucide-react"; // Removed Users icon as it's not used
+// Removed Image from 'next/image' as it's not used
 
 // Mock Discord Icon SVG as lucide-react doesn't have it
 const DiscordIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -150,4 +151,3 @@ export default function IntegrationsPage() {
     </div>
   );
 }
-
