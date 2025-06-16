@@ -16,7 +16,7 @@ import type { User, UserRole, ProjectSpotlightData } from '@/types';
 import { useToast } from '@/hooks/use-toast';
 import { ShieldCheck, Edit, Save, Users, Tv } from 'lucide-react';
 
-const PROJECT_SPOTLIGHT_STORAGE_KEY = 'projectSpotlight_nationquest';
+const PROJECT_SPOTLIGHT_STORAGE_KEY = 'projectSpotlight_teamcore';
 
 export default function AdminPage() {
   const { currentUser, getAllUsers, updateUserRole } = useAuth();
@@ -25,17 +25,17 @@ export default function AdminPage() {
 
   const [users, setUsers] = useState<User[]>([]);
   const [spotlightData, setSpotlightData] = useState<ProjectSpotlightData>({
-    title: 'Project Spotlight: The Azure Glade',
-    description: 'Our current major focus is the development of the Azure Glade region. This involves new environmental assets, questlines, and NPC interactions.',
-    button1Text: 'View Project Details',
+    title: 'Project Spotlight: Core Platform Alpha',
+    description: 'Current focus is stabilizing the core platform features for an upcoming alpha release. Key areas include task management and role permissions.',
+    button1Text: 'View Roadmap',
     button1Link: '#',
-    button2Text: 'Contribute',
+    button2Text: 'Join Testing',
     button2Link: '#',
   });
 
   useEffect(() => {
     if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'owner')) {
-      router.replace('/dashboard'); // Redirect if not admin/owner
+      router.replace('/dashboard'); 
       return;
     }
     setUsers(getAllUsers());
@@ -43,16 +43,21 @@ export default function AdminPage() {
     if (typeof window !== 'undefined') {
       const storedSpotlight = localStorage.getItem(PROJECT_SPOTLIGHT_STORAGE_KEY);
       if (storedSpotlight) {
-        setSpotlightData(JSON.parse(storedSpotlight));
+        try {
+            setSpotlightData(JSON.parse(storedSpotlight));
+        } catch (e) {
+            console.error("Failed to parse spotlight data from localStorage", e);
+            localStorage.removeItem(PROJECT_SPOTLIGHT_STORAGE_KEY);
+        }
       }
     }
   }, [currentUser, router, getAllUsers]);
 
   const handleRoleChange = async (userId: string, newRole: UserRole) => {
     try {
-      const isVerified = newRole !== 'guest';
-      await updateUserRole(userId, newRole, isVerified);
-      setUsers(getAllUsers()); // Refresh user list
+      // Verification status is handled by updateUserRole based on the role
+      await updateUserRole(userId, newRole);
+      setUsers(getAllUsers()); 
       toast({ title: "User Updated", description: `User role changed to ${newRole}.` });
     } catch (error) {
       toast({ title: "Update Failed", description: (error as Error).message, variant: "destructive" });
@@ -76,7 +81,7 @@ export default function AdminPage() {
     return <p>Access Denied. Redirecting...</p>;
   }
 
-  const availableRoles: UserRole[] = ['guest', 'verified', 'contributor', 'specialist', 'admin', 'owner'];
+  const availableRoles: UserRole[] = ['guest', 'verified', 'Developer', 'Builder', 'Designer', 'Community Manager', 'Moderator', 'Project Manager', 'admin', 'owner'];
 
 
   return (
@@ -84,7 +89,7 @@ export default function AdminPage() {
       <Card>
         <CardHeader>
           <CardTitle className="text-3xl font-bold flex items-center"><ShieldCheck className="mr-3 h-8 w-8 text-primary"/>Admin Panel</CardTitle>
-          <CardDescription>Manage users and site content.</CardDescription>
+          <CardDescription>Manage users and site content for TeamCore.</CardDescription>
         </CardHeader>
       </Card>
 
@@ -112,17 +117,19 @@ export default function AdminPage() {
                   <TableCell><Badge variant={user.role === 'admin' || user.role === 'owner' ? 'default' : 'secondary'}>{user.role}</Badge></TableCell>
                   <TableCell>{user.isVerified ? <Badge variant="default" className="bg-green-500/80 hover:bg-green-500/70">Yes</Badge> : <Badge variant="destructive">No</Badge>}</TableCell>
                   <TableCell>
-                    {currentUser.id !== user.id && (currentUser.role === 'owner' || user.role !== 'owner') ? ( // Owners can manage anyone except themselves, Admins can manage non-owners/admins
+                    {currentUser.id !== user.id && (currentUser.role === 'owner' || (user.role !== 'owner' && user.role !== 'admin')) && (currentUser.role === 'owner' || user.role !== 'owner') ? (
                        <Select 
                           value={user.role} 
                           onValueChange={(newRole: UserRole) => handleRoleChange(user.id, newRole)}
+                          disabled={currentUser.role === 'admin' && (user.role === 'admin' || user.role === 'owner')} // Admin cannot change other admin or owner
                         >
                         <SelectTrigger className="w-[180px]">
                           <SelectValue placeholder="Change role" />
                         </SelectTrigger>
                         <SelectContent>
                           {availableRoles.map(role => (
-                             (currentUser.role === 'owner' || (role !== 'owner')) && // Admin cannot assign 'owner'
+                             // Owner can assign any role. Admin cannot assign 'owner' or 'admin' to others.
+                            (currentUser.role === 'owner' || (role !== 'owner' && role !== 'admin')) && 
                             <SelectItem key={role} value={role} disabled={currentUser.id === user.id && role !== currentUser.role}>
                               {role.charAt(0).toUpperCase() + role.slice(1)}
                             </SelectItem>
@@ -183,5 +190,3 @@ export default function AdminPage() {
     </div>
   );
 }
-
-    

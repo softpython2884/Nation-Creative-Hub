@@ -1,11 +1,11 @@
 
 "use client";
 
-import React, { useState, useEffect } from 'react'; // Added useState and useEffect
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { BarChart, LineChart as LineChartIconLucide, PieChartIcon, Users, ListChecks, Activity, ArrowRight, Lightbulb, Tv } from "lucide-react";
+import { BarChart, LineChart as LineChartIconLucide, PieChartIcon, Users, ListChecks, Activity, ArrowRight, Lightbulb, Tv, Briefcase } from "lucide-react";
 import Link from "next/link";
 import {
   ChartContainer,
@@ -18,7 +18,7 @@ import { Bar, Line, Pie, ResponsiveContainer, Cell, PieLabelRenderProps, PieChar
 import { useAuth } from "@/contexts/auth-context";
 import type { ProjectSpotlightData } from '@/types';
 
-const PROJECT_SPOTLIGHT_STORAGE_KEY = 'projectSpotlight_nationquest';
+const PROJECT_SPOTLIGHT_STORAGE_KEY = 'projectSpotlight_teamcore';
 
 
 const taskData = [
@@ -56,11 +56,11 @@ export default function DashboardPage() {
   const completionPercentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
   const [spotlightData, setSpotlightData] = useState<ProjectSpotlightData>({
-    title: 'Project Spotlight: The Azure Glade',
-    description: 'Our current major focus is the development of the Azure Glade region. This involves new environmental assets, questlines, and NPC interactions.',
-    button1Text: 'View Project Details',
+    title: 'Project Spotlight: Core Platform Alpha',
+    description: 'Current focus is stabilizing the core platform features for an upcoming alpha release. Key areas include task management and role permissions.',
+    button1Text: 'View Roadmap',
     button1Link: '#',
-    button2Text: 'Contribute',
+    button2Text: 'Join Testing',
     button2Link: '#',
   });
 
@@ -72,8 +72,7 @@ export default function DashboardPage() {
           setSpotlightData(JSON.parse(storedSpotlight));
         } catch (e) {
           console.error("Failed to parse spotlight data from localStorage", e);
-          // Fallback to default if parsing fails
-           localStorage.removeItem(PROJECT_SPOTLIGHT_STORAGE_KEY); // Clear potentially corrupted data
+           localStorage.removeItem(PROJECT_SPOTLIGHT_STORAGE_KEY); 
         }
       }
     }
@@ -84,11 +83,11 @@ export default function DashboardPage() {
     <div className="grid gap-6 md:gap-8">
       <Card className="col-span-1 md:col-span-2 lg:col-span-3 shadow-lg">
         <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-2xl font-bold">Welcome back, {currentUser?.name || 'Developer'}!</CardTitle> 
+          <CardTitle className="text-2xl font-bold">Welcome back, {currentUser?.name || 'User'}!</CardTitle> 
           <Activity className="h-6 w-6 text-primary" />
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground">Here's what's happening with Nation Quest today. Let's build something amazing!</p>
+          <p className="text-muted-foreground">Here's what's happening with TeamCore today. Let's collaborate and innovate!</p>
           {currentUser?.role === 'guest' && (
             <p className="mt-2 text-sm text-destructive">Your account is pending verification by an administrator.</p>
           )}
@@ -114,8 +113,8 @@ export default function DashboardPage() {
 
         <Card className="hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Project Completion</CardTitle>
-            <BarChart className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Project Progress (Sample)</CardTitle>
+            <Briefcase className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{completionPercentage}%</div>
@@ -128,14 +127,14 @@ export default function DashboardPage() {
 
         <Card className="hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Community Members</CardTitle>
+            <CardTitle className="text-sm font-medium">Team Members</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">128</div> {/* Mock data */}
-            <p className="text-xs text-muted-foreground">+5 new members this week</p> {/* Mock data */}
+            <div className="text-2xl font-bold">7</div> {/* Mock data */}
+            <p className="text-xs text-muted-foreground">+2 new members this week</p> {/* Mock data */}
             <Button variant="link" size="sm" className="px-0 mt-2" asChild>
-              <Link href="/dashboard/community">Manage Community <ArrowRight className="ml-1 h-4 w-4"/></Link>
+              <Link href="/dashboard/community">Manage Team <ArrowRight className="ml-1 h-4 w-4"/></Link>
             </Button>
           </CardContent>
         </Card>
@@ -223,5 +222,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-    

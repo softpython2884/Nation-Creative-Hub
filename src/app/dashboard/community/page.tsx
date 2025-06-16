@@ -9,37 +9,42 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from '@/components/ui/button';
 import { MessageCircle, UserPlus, Search, UserCircle2 } from 'lucide-react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogClose, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import type { UserRole } from '@/types';
 
 
 interface CommunityMember {
   id: string;
   name: string;
-  role: 'Composer' | 'Builder' | 'Designer' | 'Developer' | 'Writer' | 'Community Manager';
+  role: UserRole; 
   bio: string;
   skills: string[];
   joinedDate: string;
 }
 
 const initialMembers: CommunityMember[] = [
-  { id: '1', name: 'Elara Moonwhisper', role: 'Composer', bio: 'Crafting immersive soundscapes and epic scores for Nation Quest.', skills: ['Orchestration', 'Sound Design', 'MIDI'], joinedDate: '2023-05-15', },
-  { id: '2', name: 'Grom Stonebeard', role: 'Builder', bio: 'Architect of grand castles and intricate dungeons. Loves a good challenge.', skills: ['Level Design', '3D Modeling', 'Texturing'], joinedDate: '2022-11-01', },
-  { id: '3', name: 'Lyra Starweaver', role: 'Designer', bio: 'Visualizing the world of Nation Quest, from character concepts to UI.', skills: ['Concept Art', 'UI/UX', 'Illustration'], joinedDate: '2023-01-20', },
-  { id: '4', name: 'Jax Coderius', role: 'Developer', bio: 'Bringing game mechanics to life with clean and efficient code.', skills: ['C++', 'Game Logic', 'AI Programming'], joinedDate: '2022-08-10', },
-  { id: '5', name: 'Faelan Quillstrike', role: 'Writer', bio: 'Weaving tales and lore that breathe life into Nation Quest.', skills: ['Storytelling', 'Dialogue', 'Worldbuilding'], joinedDate: '2023-03-05', },
-  { id: '6', name: 'Seraphina Forgefire', role: 'Builder', bio: 'Expert in crafting unique environmental assets and props.', skills: ['Asset Creation', 'Sculpting', 'Optimization'], joinedDate: '2023-09-12', },
-  { id: '7', name: 'Orion Vector', role: 'Community Manager', bio: 'Connecting with the community and fostering a positive environment.', skills: ['Communication', 'Event Planning', 'Social Media'], joinedDate: '2024-01-05', },
+  { id: '1', name: 'Alex Johnson', role: 'Developer', bio: 'Full-stack dev, loves tackling complex problems.', skills: ['React', 'Node.js', 'Python'], joinedDate: '2023-05-15', },
+  { id: '2', name: 'Maria Garcia', role: 'Designer', bio: 'Crafting intuitive and beautiful user experiences.', skills: ['UI/UX', 'Figma', 'Prototyping'], joinedDate: '2022-11-01', },
+  { id: '3', name: 'Sam Chen', role: 'Project Manager', bio: 'Keeping projects on track and teams aligned.', skills: ['Agile', 'Scrum', 'Communication'], joinedDate: '2023-01-20', },
+  { id: '4', name: 'Emily White', role: 'Builder', bio: 'Focused on infrastructure and deployment pipelines.', skills: ['Docker', 'Kubernetes', 'CI/CD'], joinedDate: '2022-08-10', },
+  { id: '5', name: 'David Lee', role: 'Moderator', bio: 'Ensuring a healthy and productive community environment.', skills: ['Conflict Resolution', 'Content Moderation'], joinedDate: '2023-03-05', },
+  { id: '6', name: 'Sarah Brown', role: 'Community Manager', bio: 'Engaging with users and gathering feedback.', skills: ['Social Media', 'Event Planning', 'Feedback Analysis'], joinedDate: '2024-01-05', },
+  { id: '7', name: 'Tom Wilson', role: 'owner', bio: 'Overseeing project direction and strategy.', skills: ['Leadership', 'Strategy', 'Product Vision'], joinedDate: '2022-01-01', },
 ];
 
-const roleColors: { [key: string]: string } = {
-    Composer: 'bg-purple-500/20 text-purple-700 dark:bg-purple-700/30 dark:text-purple-400 border-purple-500/30',
-    Builder: 'bg-orange-500/20 text-orange-700 dark:bg-orange-700/30 dark:text-orange-400 border-orange-500/30',
-    Designer: 'bg-pink-500/20 text-pink-700 dark:bg-pink-700/30 dark:text-pink-400 border-pink-500/30',
+const roleColors: { [key in UserRole]?: string } = {
     Developer: 'bg-blue-500/20 text-blue-700 dark:bg-blue-700/30 dark:text-blue-400 border-blue-500/30',
-    Writer: 'bg-teal-500/20 text-teal-700 dark:bg-teal-700/30 dark:text-teal-400 border-teal-500/30',
+    Designer: 'bg-pink-500/20 text-pink-700 dark:bg-pink-700/30 dark:text-pink-400 border-pink-500/30',
+    Builder: 'bg-orange-500/20 text-orange-700 dark:bg-orange-700/30 dark:text-orange-400 border-orange-500/30',
+    'Project Manager': 'bg-indigo-500/20 text-indigo-700 dark:bg-indigo-700/30 dark:text-indigo-400 border-indigo-500/30',
+    Moderator: 'bg-yellow-500/20 text-yellow-700 dark:bg-yellow-700/30 dark:text-yellow-400 border-yellow-500/30',
     'Community Manager': 'bg-green-500/20 text-green-700 dark:bg-green-700/30 dark:text-green-400 border-green-500/30',
+    admin: 'bg-purple-500/20 text-purple-700 dark:bg-purple-700/30 dark:text-purple-400 border-purple-500/30',
+    owner: 'bg-red-500/20 text-red-700 dark:bg-red-700/30 dark:text-red-400 border-red-500/30',
+    guest: 'bg-gray-500/20 text-gray-700 dark:bg-gray-700/30 dark:text-gray-400 border-gray-500/30',
+    verified: 'bg-teal-500/20 text-teal-700 dark:bg-teal-700/30 dark:text-teal-400 border-teal-500/30',
 };
 
 function MemberCard({ member, onMessage }: { member: CommunityMember; onMessage: (memberName: string) => void; }) {
@@ -52,7 +57,7 @@ function MemberCard({ member, onMessage }: { member: CommunityMember; onMessage:
           </AvatarFallback>
         </Avatar>
         <CardTitle className="text-xl">{member.name}</CardTitle>
-        <Badge variant="outline" className={`mt-1 ${roleColors[member.role]}`}>{member.role}</Badge>
+        <Badge variant="outline" className={`mt-1 ${roleColors[member.role] || 'bg-gray-500/20 text-gray-700 border-gray-500/30'}`}>{member.role}</Badge>
       </CardHeader>
       <CardContent className="flex-grow">
         <p className="text-sm text-muted-foreground text-center mb-3">{member.bio}</p>
@@ -80,12 +85,13 @@ export default function CommunityPage() {
   const [messageRecipient, setMessageRecipient] = useState('');
   const { toast } = useToast();
 
-  const roles = ['All', ...Array.from(new Set(initialMembers.map(member => member.role)))];
+  const roles: UserRole[] = ['guest', 'verified', 'Developer', 'Builder', 'Designer', 'Community Manager', 'Moderator', 'Project Manager', 'admin', 'owner'];
+  const displayRoles = ['All', ...roles];
+
 
   const filteredMembers = initialMembers.filter(member => {
     const nameMatch = member.name.toLowerCase().includes(searchTerm.toLowerCase());
     const roleMatch = selectedRole === 'all' || member.role.toLowerCase() === selectedRole.toLowerCase();
-    // Skill search (basic implementation: checks if any skill contains the search term)
     const skillMatch = searchTerm === '' || member.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()));
     return (nameMatch || skillMatch) && roleMatch;
   });
@@ -97,7 +103,6 @@ export default function CommunityPage() {
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    // Actual send message logic would go here (requires backend)
     toast({ title: "Message UI Demo", description: `Message to ${messageRecipient} would be sent. (This is a UI demo only)`});
     setIsMessageDialogOpen(false);
   };
@@ -106,8 +111,8 @@ export default function CommunityPage() {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="text-3xl font-bold">Community Hub</CardTitle>
-          <CardDescription>Connect with the talented individuals building Nation Quest.</CardDescription>
+          <CardTitle className="text-3xl font-bold">Team Hub</CardTitle>
+          <CardDescription>Connect with the talented individuals building TeamCore.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-col md:flex-row gap-4">
@@ -126,10 +131,10 @@ export default function CommunityPage() {
                 <SelectValue placeholder="Filter by role" />
               </SelectTrigger>
               <SelectContent>
-                {roles.map(role => <SelectItem key={role} value={role.toLowerCase()}>{role}</SelectItem>)}
+                {displayRoles.map(role => <SelectItem key={role} value={role.toLowerCase()}>{role}</SelectItem>)}
               </SelectContent>
             </Select>
-            <Button className="w-full md:w-auto" disabled> {/* Invite member functionality needs backend */}
+            <Button className="w-full md:w-auto" disabled> 
               <UserPlus className="mr-2 h-4 w-4" /> Invite Member (Soon)
             </Button>
           </div>
@@ -152,7 +157,6 @@ export default function CommunityPage() {
         </Card>
       )}
 
-      {/* Message Dialog (UI Demo) */}
       <Dialog open={isMessageDialogOpen} onOpenChange={setIsMessageDialogOpen}>
         <DialogContent>
           <DialogHeader>
@@ -172,9 +176,7 @@ export default function CommunityPage() {
           </form>
         </DialogContent>
       </Dialog>
-       <p className="text-sm text-muted-foreground text-center">Community features like real-time messaging require backend integration.</p>
+       <p className="text-sm text-muted-foreground text-center">Community features like real-time messaging and inviting members require backend integration.</p>
     </div>
   );
 }
-
-    

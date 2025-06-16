@@ -17,7 +17,7 @@ export default function HomePage() {
     {
       icon: <Users className="h-8 w-8 text-primary" />,
       title: "Vibrant Community Hub",
-      description: "Connect with composers, builders, designers, and other talents. Manage roles and foster collaboration.",
+      description: "Connect with team members, manage roles, and foster collaboration.",
       link: "/dashboard/community",
     },
     {
@@ -29,7 +29,7 @@ export default function HomePage() {
     {
       icon: <Workflow className="h-8 w-8 text-primary" />,
       title: "Seamless Integrations",
-      description: "Stay updated with notifications, engage in forums, and connect via Discord, all in one place.",
+      description: "Stay updated with notifications, engage in forums, and manage project workflows.",
       link: "/dashboard/integrations",
     },
   ];
@@ -40,7 +40,7 @@ export default function HomePage() {
         <div className="container flex h-16 items-center justify-center">
           <div className="flex items-center gap-x-8">
             <Logo />
-            <nav className="flex items-center gap-x-4">
+            <nav className="flex items-center gap-4">
               <Button variant="ghost" asChild>
                 <Link href="#features">Features</Link>
               </Button>
@@ -49,7 +49,7 @@ export default function HomePage() {
               </Button>
               <ThemeToggle />
               <Button asChild>
-                <Link href="/auth/login">Enter Hub</Link>
+                <Link href="/auth/login">Enter Platform</Link>
               </Button>
             </nav>
           </div>
@@ -61,15 +61,15 @@ export default function HomePage() {
         <section className="py-20 md:py-32">
           <div className="container text-center">
             <h1 className="text-4xl font-headline font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-              Nation Quest
+              TeamCore
             </h1>
             <p className="mt-6 max-w-3xl mx-auto text-lg text-foreground/80 sm:text-xl md:text-2xl">
-              The Centralized Development & Creative Hub. <br />
-              Uniting talents to build the future.
+              The Collaborative Workspace Platform. <br />
+              Uniting teams to build the future.
             </p>
             <div className="mt-10 flex justify-center gap-4">
               <Button size="lg" asChild>
-                <Link href="/auth/login">Explore the Hub</Link>
+                <Link href="/auth/login">Explore TeamCore</Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
                 <Link href="#features">Learn More</Link>
@@ -82,7 +82,7 @@ export default function HomePage() {
         <section id="features" className="py-16 md:py-24 bg-background/50 dark:bg-background/80">
           <div className="container">
             <h2 className="text-3xl font-headline font-bold text-center sm:text-4xl">
-              Everything You Need in One Place
+              Everything Your Team Needs in One Place
             </h2>
             <p className="mt-4 mb-12 text-center text-lg text-foreground/70">
               Streamline your workflow and collaboration with our powerful set of tools.
@@ -99,9 +99,7 @@ export default function HomePage() {
                     <div className="mt-4 text-center">
                       <Button variant="link" asChild>
                         <Link href={feature.link}>
-                          <span>
-                            Discover <span className="sr-only">{feature.title}</span>
-                          </span>
+                          <span>Discover <span className="sr-only">{feature.title}</span></span>
                         </Link>
                       </Button>
                     </div>
@@ -118,16 +116,16 @@ export default function HomePage() {
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <h2 className="text-3xl font-headline font-bold sm:text-4xl">
-                  Join a Thriving Community
+                  Build with a Thriving Team
                 </h2>
                 <p className="mt-4 text-lg text-foreground/70">
-                  Nation Quest is built by a passionate community of developers, designers, composers, and builders. Connect, collaborate, and contribute to an ever-evolving world.
+                  TeamCore is designed for collaborative project development. Connect, manage roles, and contribute to an ever-evolving workspace.
                 </p>
                 <ul className="mt-6 space-y-3">
                   {[
                     "Collaborate on exciting projects",
                     "Share your skills and learn from others",
-                    "Help shape the future of Nation Quest",
+                    "Help shape the future of your projects",
                     "Evolving roles and recognition for your contributions",
                   ].map((item) => (
                     <li key={item} className="flex items-center gap-2">
@@ -138,13 +136,12 @@ export default function HomePage() {
                 </ul>
                 <div className="mt-8">
                   <Button size="lg" asChild>
-                    <Link href="/dashboard/community">Meet the Community</Link>
+                    <Link href="/dashboard/community">Meet the Team</Link>
                   </Button>
                 </div>
               </div>
-              {/* Placeholder for an image or illustration if desired in the future */}
-              {/* <div className="flex items-center justify-center">
-                <Users className="w-64 h-64 text-primary/30" data-ai-hint="community teamwork" />
+               {/* <div className="flex items-center justify-center">
+                <Users className="w-64 h-64 text-primary/30" data-ai-hint="team collaboration" />
               </div> */}
             </div>
           </div>
@@ -153,8 +150,8 @@ export default function HomePage() {
 
       <footer className="py-8 border-t bg-background">
         <div className="container text-center text-foreground/60">
-          <p>&copy; {new Date().getFullYear()} Nation Quest. All rights reserved.</p>
-          <p className="text-sm mt-1">Powered by imagination and collaboration.</p>
+          <p>&copy; {new Date().getFullYear()} TeamCore. All rights reserved.</p>
+          <p className="text-sm mt-1">Powered by teamwork and innovation.</p>
         </div>
       </footer>
     </div>

@@ -11,8 +11,8 @@ interface AuthContextType {
   login: (email: string, pass: string) => Promise<void>;
   register: (name: string, email: string, pass: string) => Promise<void>;
   logout: () => Promise<void>;
-  updateUserRole: (userId: string, newRole: UserRole, isVerified?: boolean) => Promise<void>; // For admin actions
-  getAllUsers: () => User[]; // For admin panel user list (mocked)
+  updateUserRole: (userId: string, newRole: UserRole, isVerified?: boolean) => Promise<void>; 
+  getAllUsers: () => User[]; 
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -25,20 +25,36 @@ export function useAuth() {
   return context;
 }
 
-const MOCK_USERS_STORAGE_KEY = 'mock_users_nationquest';
-const CURRENT_USER_STORAGE_KEY = 'currentUser_nationquest';
-const SESSION_TOKEN_STORAGE_KEY = 'sessionToken_nationquest';
+const MOCK_USERS_STORAGE_KEY = 'mock_users_teamcore';
+const CURRENT_USER_STORAGE_KEY = 'currentUser_teamcore';
+const SESSION_TOKEN_STORAGE_KEY = 'sessionToken_teamcore';
 
-// Helper to get mock users from localStorage
 const getMockUsers = (): User[] => {
   if (typeof window !== 'undefined') {
     const storedUsers = localStorage.getItem(MOCK_USERS_STORAGE_KEY);
-    return storedUsers ? JSON.parse(storedUsers) : [];
+    if (storedUsers) {
+        try {
+            return JSON.parse(storedUsers);
+        } catch (e) {
+            console.error("Failed to parse mock users from localStorage", e);
+            localStorage.removeItem(MOCK_USERS_STORAGE_KEY); // Clear potentially corrupted data
+            return [];
+        }
+    }
+    // Initialize with a default owner if no users exist
+    const defaultOwner: User = {
+      id: 'owner_01',
+      name: 'Default Owner',
+      email: 'owner@teamcore.dev',
+      role: 'owner',
+      isVerified: true,
+    };
+    saveMockUsers([defaultOwner]);
+    return [defaultOwner];
   }
   return [];
 };
 
-// Helper to save mock users to localStorage
 const saveMockUsers = (users: User[]) => {
   if (typeof window !== 'undefined') {
     localStorage.setItem(MOCK_USERS_STORAGE_KEY, JSON.stringify(users));
@@ -55,6 +71,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLoading(true);
     if (typeof window !== 'undefined') {
       try {
+        // Ensure mock users are initialized (especially the default owner)
+        getMockUsers(); 
         const token = localStorage.getItem(SESSION_TOKEN_STORAGE_KEY);
         if (token) {
           const storedUser = localStorage.getItem(CURRENT_USER_STORAGE_KEY);
@@ -78,7 +96,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await new Promise(resolve => setTimeout(resolve, 500));
     
     const mockUsers = getMockUsers();
-    const foundUser = mockUsers.find(u => u.email === email); // Password check omitted for demo
+    const foundUser = mockUsers.find(u => u.email === email); 
 
     if (foundUser) {
       if (!foundUser.isVerified && foundUser.role === 'guest') {
@@ -110,28 +128,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       name, 
       email, 
       id: `user_${Date.now()}`, 
-      role: 'guest', // New users start as 'guest'
+      role: 'guest', 
       isVerified: false 
     };
     
     mockUsers.push(newUser);
-    // For demo, one admin user
-    if (email === 'admin@nationquest.dev' && pass === 'admin') {
+    
+    // Special case for initial admin/owner for demo purposes
+    if (email === 'admin@teamcore.dev' && pass === 'admin') { // Example admin credentials
+        newUser.role = 'admin';
+        newUser.isVerified = true;
+    }
+     if (email === 'owner@teamcore.dev' && pass === 'owner') { // Example owner credentials
         newUser.role = 'owner';
         newUser.isVerified = true;
     }
 
+
     saveMockUsers(mockUsers);
-    
-    // Don't log in directly, user needs verification
-    // setCurrentUser(newUser);
-    // localStorage.setItem(SESSION_TOKEN_STORAGE_KEY, `mock-token-${newUser.id}`);
-    // localStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(newUser));
-    
+        
     setLoading(false);
-    // Instead of pushing to dashboard, inform user about verification
-    // router.push('/auth/login?registered=true'); // Or a specific "pending verification" page
-    alert("Registration successful! Please wait for an administrator to verify your account.");
+    alert("Registration successful! Your account is now 'guest' and requires verification by an administrator to gain full access.");
     router.push('/auth/login');
   };
 
@@ -152,10 +169,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (isVerifiedUpdate !== undefined) {
         mockUsers[userIndex].isVerified = isVerifiedUpdate;
       }
+      // Ensure that if a user is made 'guest', they are also marked as not verified.
+      // And if they are any other role, they are marked as verified.
+      if (newRole === 'guest') {
+        mockUsers[userIndex].isVerified = false;
+      } else {
+        mockUsers[userIndex].isVerified = true;
+      }
+
       saveMockUsers(mockUsers);
-      // If updating current user, update state as well
       if (currentUser?.id === userId) {
-        const updatedCurrentUser = { ...currentUser, role: newRole, isVerified: isVerifiedUpdate !== undefined ? isVerifiedUpdate : currentUser.isVerified };
+        const updatedCurrentUser = { 
+            ...currentUser, 
+            role: newRole, 
+            isVerified: newRole === 'guest' ? false : true
+        };
         setCurrentUser(updatedCurrentUser);
         localStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(updatedCurrentUser));
       }
@@ -181,5 +209,3 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
-
-    

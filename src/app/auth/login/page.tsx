@@ -36,7 +36,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-background to-secondary/30 p-4">
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold text-primary">Nation Quest Hub</CardTitle>
+          <CardTitle className="text-3xl font-bold text-primary">TeamCore Login</CardTitle>
           <CardDescription>Welcome back! Please login to continue.</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>

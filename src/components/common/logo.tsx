@@ -1,4 +1,5 @@
-import { MountainSnow } from "lucide-react";
+
+import { MountainSnow, Briefcase } from "lucide-react";
 import Link from "next/link";
 
 export function Logo({ size = "md", className }: { size?: "sm" | "md" | "lg", className?: string }) {
@@ -8,9 +9,9 @@ export function Logo({ size = "md", className }: { size?: "sm" | "md" | "lg", cl
     lg: "text-3xl",
   };
   return (
-    <Link href="/" className={`flex items-center gap-2 font-bold ${sizeClasses[size]} text-primary ${className || ''}`} aria-label="Nation Quest Home">
-      <MountainSnow className="h-6 w-6" />
-      <span>Nation Quest</span>
+    <Link href="/" className={`flex items-center gap-2 font-bold ${sizeClasses[size]} text-primary ${className || ''}`} aria-label="TeamCore Home">
+      <Briefcase className="h-6 w-6" />
+      <span>TeamCore</span>
     </Link>
   );
 }

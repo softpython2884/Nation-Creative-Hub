@@ -1,5 +1,15 @@
 
-export type UserRole = 'guest' | 'verified' | 'contributor' | 'specialist' | 'admin' | 'owner';
+export type UserRole = 
+  | 'guest'             // New user, unverified
+  | 'verified'          // Basic verified user
+  | 'Developer'
+  | 'Builder'
+  | 'Designer'
+  | 'Community Manager'
+  | 'Moderator'
+  | 'Project Manager'
+  | 'admin'             // Admin, can manage users/content
+  | 'owner';            // Top-level owner
 
 export interface User {
   id: string;
@@ -7,7 +17,6 @@ export interface User {
   email: string;
   role: UserRole;
   isVerified: boolean; 
-  // Add other relevant fields like avatarUrl, etc. if needed in the future
 }
 
 export interface NotificationItem {
@@ -26,7 +35,4 @@ export interface ProjectSpotlightData {
   button1Link?: string;
   button2Text?: string;
   button2Link?: string;
-  // For now, we'll skip image management as it requires more infrastructure
 }
-
-    

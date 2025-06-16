@@ -1,15 +1,75 @@
-# **App Name**: Nation Quest – Dev & Creative Hub
+App Name:
+TeamCore – Collaborative Workspace Platform
 
-## Core Features:
+Core Features:
+A complete team-oriented workspace app designed for collaborative project development with client-server architecture and advanced user roles.
 
-- Centralized Development Platform: Web platform to organize and centralize the Nation Quest project development
-- Task Management: Task management (ToDo, notes, etc.)
-- Public Area: Public area for users
-- Community Management: Community management (composers, builders, designers, etc.)
-- Personal Dashboard: Personal dashboard for each user
-- Integrations and Roles: Notifications, forums, Discord integration, and evolving user roles
+User Roles & Permissions: Owner, Project Manager, Moderator, Developer, Builder, Designer, Community Manager, etc. Each with specific access levels
 
-## Style Guidelines:
+Authentication System: Mandatory login screen with email/password to access dashboard
 
-- Light or dark theme
-- Primarily blue color tones as the main visual identity
+Dashboard Overview:
+
+Personalized greeting ("Welcome, {Username}")
+
+Overview of main project(s)
+
+Activity graphs (tasks completed, user activity, contributions, etc.)
+
+Task status charts and project progression
+
+Project Management Tools:
+
+To-Do lists (personal and shared)
+
+Kanban-style boards per project
+
+Calendar/agenda integration
+
+GitHub repository sync for each project
+
+Shared notes and documentation per module/project
+
+File sharing (PDF, ZIP, images, etc.)
+
+Tag system for content, tasks, and roles
+
+Role-based content visibility and actions
+
+Team Communication:
+
+Internal messaging (comments, mentions)
+
+Teamwide announcements (visible on all dashboards)
+
+Discussion threads per project/task
+
+User & Role Management (Admin Tools):
+
+Register/invite new users
+
+Assign/modify roles
+
+Track last login and user activity
+
+Admin dashboard with user logs and system stats
+
+Shared Resources:
+
+Central file library
+
+Wiki or team knowledge base
+
+Shared code snippets or reusable templates
+
+Style Guidelines:
+
+Modern clean UI with dark/light theme toggle
+
+Primary colors: shades of blue and neutral grays
+
+Responsive and accessible design
+
+Sidebar navigation with icons and labels
+
+Graphs and data visuals with smooth animations (charts.js / recharts)

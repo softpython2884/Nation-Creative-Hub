@@ -9,8 +9,8 @@ import { AuthProvider } from "@/contexts/auth-context"; // Import AuthProvider
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'Nation Quest – Dev & Creative Hub',
-  description: 'Centralized platform for Nation Quest project development and community.',
+  title: 'TeamCore – Collaborative Workspace Platform',
+  description: 'Centralized platform for TeamCore project development and collaboration.',
 };
 
 export default function RootLayout({
