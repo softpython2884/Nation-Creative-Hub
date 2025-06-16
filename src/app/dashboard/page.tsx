@@ -4,9 +4,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { BarChart, LineChart, PieChartIcon, Users, ListChecks, Activity, ArrowRight, Lightbulb } from "lucide-react"; // Added Lightbulb, changed PieChart to PieChartIcon
+import { BarChart, LineChart as LineChartIconLucide, PieChartIcon, Users, ListChecks, Activity, ArrowRight, Lightbulb } from "lucide-react"; // Renamed LineChart to avoid conflict
 import Link from "next/link";
-// import Image from "next/image"; // Removed Image import
 import {
   ChartContainer,
   ChartTooltip,
@@ -14,7 +13,8 @@ import {
   ChartLegend,
   ChartLegendContent,
 } from "@/components/ui/chart"
-import { Bar, Line, Pie, ResponsiveContainer, Cell, PieLabelRenderProps } from "recharts"
+import { Bar, Line, Pie, ResponsiveContainer, Cell, PieLabelRenderProps, PieChart, LineChart } from "recharts"; // Added PieChart and LineChart
+import { useAuth } from "@/contexts/auth-context"; // Import useAuth
 
 const taskData = [
   { status: "To Do", count: 12, fill: "hsl(var(--chart-1))" },
@@ -45,6 +45,7 @@ const chartConfig = {
 
 
 export default function DashboardPage() {
+  const { currentUser } = useAuth(); // Get current user
   const totalTasks = taskData.reduce((acc, curr) => acc + curr.count, 0);
   const completedTasks = taskData.find(t => t.status === "Completed")?.count || 0;
   const completionPercentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
@@ -53,7 +54,7 @@ export default function DashboardPage() {
     <div className="grid gap-6 md:gap-8">
       <Card className="col-span-1 md:col-span-2 lg:col-span-3 shadow-lg">
         <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-2xl font-bold">Welcome back, Developer!</CardTitle>
+          <CardTitle className="text-2xl font-bold">Welcome back, {currentUser?.name || 'Developer'}!</CardTitle> {/* Use currentUser name */}
           <Activity className="h-6 w-6 text-primary" />
         </CardHeader>
         <CardContent>
@@ -116,7 +117,7 @@ export default function DashboardPage() {
           <CardContent className="h-[300px]">
             <ChartContainer config={{}} className="w-full h-full">
               <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
+                <PieChart> {/* Ensured PieChart is imported and used */}
                   <ChartTooltip content={<ChartTooltipContent hideLabel />} />
                   <Pie
                     data={taskData}
@@ -146,7 +147,7 @@ export default function DashboardPage() {
           <CardContent className="h-[300px]">
             <ChartContainer config={chartConfig} className="w-full h-full">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={activityData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                <LineChart data={activityData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}> {/* Ensured LineChart is imported and used */}
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Line type="monotone" dataKey="tasksCompleted" stroke={chartConfig.tasksCompleted.color} strokeWidth={2} dot={false} />
                   <Line type="monotone" dataKey="newTasks" stroke={chartConfig.newTasks.color} strokeWidth={2} dot={false} />

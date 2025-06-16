@@ -2,10 +2,9 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { CheckCircle, Users, ListChecks, LayoutDashboard, Workflow, Rocket } from "lucide-react"; // Added Rocket, Users is already available
+import { CheckCircle, Users, ListChecks, LayoutDashboard, Workflow } from "lucide-react";
 import { Logo } from "@/components/common/logo";
 import { ThemeToggle } from "@/components/common/theme-toggle";
-// import Image from "next/image"; // Removed Image import
 
 export default function HomePage() {
   const features = [
@@ -38,7 +37,7 @@ export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-background to-secondary/30 dark:from-background dark:to-primary/10">
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-between">
+        <div className="container flex h-16 items-center justify-center gap-8">
           <Logo />
           <nav className="flex items-center gap-4">
             <Button variant="ghost" asChild>
@@ -49,7 +48,7 @@ export default function HomePage() {
             </Button>
             <ThemeToggle />
             <Button asChild>
-              <Link href="/dashboard">Enter Hub</Link>
+              <Link href="/auth/login">Enter Hub</Link>
             </Button>
           </nav>
         </div>
@@ -68,14 +67,11 @@ export default function HomePage() {
             </p>
             <div className="mt-10 flex justify-center gap-4">
               <Button size="lg" asChild>
-                <Link href="/dashboard">Explore the Hub</Link>
+                <Link href="/auth/login">Explore the Hub</Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
                 <Link href="#features">Learn More</Link>
               </Button>
-            </div>
-            <div className="mt-16 relative aspect-[2/1] max-w-4xl mx-auto rounded-xl overflow-hidden shadow-2xl bg-muted/20 flex items-center justify-center">
-              <Rocket className="w-24 h-24 sm:w-32 md:w-48 text-primary" />
             </div>
           </div>
         </section>
@@ -100,7 +96,11 @@ export default function HomePage() {
                     <CardDescription className="text-center">{feature.description}</CardDescription>
                     <div className="mt-4 text-center">
                       <Button variant="link" asChild>
-                        <Link href={feature.link}>Discover <span className="sr-only">{feature.title}</span></Link>
+                        <Link href={feature.link}>
+                          <span>
+                            Discover <span className="sr-only">{feature.title}</span>
+                          </span>
+                        </Link>
                       </Button>
                     </div>
                   </CardContent>
@@ -139,9 +139,6 @@ export default function HomePage() {
                     <Link href="/dashboard/community">Meet the Community</Link>
                   </Button>
                 </div>
-              </div>
-              <div className="relative aspect-square rounded-xl overflow-hidden shadow-lg bg-muted/20 flex items-center justify-center">
-                 <Users className="w-24 h-24 sm:w-32 md:w-48 text-primary" />
               </div>
             </div>
           </div>

@@ -2,7 +2,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useEffect } from "react"; // Import React and useEffect
 import {
   SidebarProvider,
   Sidebar,
@@ -19,7 +20,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Logo } from "@/components/common/logo";
 import { navItems } from "@/components/layout/sidebar-nav-items";
 import { DashboardHeader } from "@/components/layout/dashboard-header";
-import { HelpCircle } from "lucide-react"; // Added for consistency if HelpCircle is intended icon
+import { HelpCircle, Loader2 } from "lucide-react";
+import { useAuth } from "@/contexts/auth-context"; // Import useAuth
 
 export default function DashboardLayout({
   children,
@@ -27,7 +29,25 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const { currentUser, loading } = useAuth();
+  const router = useRouter();
 
+  useEffect(() => {
+    if (!loading && !currentUser) {
+      router.replace('/auth/login'); // Use replace to avoid adding to history stack
+    }
+  }, [currentUser, loading, router]);
+
+  if (loading || (!currentUser && pathname !== '/auth/login')) { // Also check if not already on login page
+    return (
+      <div className="flex h-screen w-screen items-center justify-center bg-background">
+        <Loader2 className="h-12 w-12 animate-spin text-primary" />
+        <p className="ml-4 text-lg text-muted-foreground">Loading...</p>
+      </div>
+    );
+  }
+  
+  // If there's a user, they can see the dashboard
   return (
     <SidebarProvider defaultOpen>
       <div className="flex min-h-screen w-full">
@@ -39,7 +59,7 @@ export default function DashboardLayout({
               <SidebarTrigger className="group-data-[collapsible=icon]:hidden" />
             </div>
           </SidebarHeader>
-          <SidebarContent> {/* Removed asChild prop */}
+          <SidebarContent>
             <ScrollArea className="h-full">
               <SidebarMenu className="p-2">
                 {navItems.map((item) => (

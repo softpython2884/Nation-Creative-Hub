@@ -1,7 +1,7 @@
 
 "use client";
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"; // Removed AvatarImage
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -12,12 +12,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Bell, Settings, LogOut, UserCircle } from "lucide-react"; // Added UserCircle
+import { Menu, Bell, Settings, LogOut, UserCircle } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import { Logo } from "@/components/common/logo";
 import { navItems } from "./sidebar-nav-items"; 
+import { useAuth } from "@/contexts/auth-context"; // Import useAuth
 
 export function DashboardHeader({
   children,
@@ -26,6 +27,12 @@ export function DashboardHeader({
 }) {
   const pathname = usePathname();
   const pageTitle = navItems.find(item => item.href === pathname)?.title || "Dashboard";
+  const { currentUser, logout } = useAuth(); // Get currentUser and logout function
+
+  const handleLogout = async () => {
+    await logout();
+    // Router will redirect via AuthContext or DashboardLayout effect
+  };
 
   return (
     <header className="flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 sticky top-0 z-30">
@@ -74,23 +81,23 @@ export function DashboardHeader({
               <Button variant="secondary" size="icon" className="rounded-full">
                 <Avatar className="h-8 w-8">
                   <AvatarFallback>
-                    <UserCircle className="w-7 h-7 text-primary" />
+                    {currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : <UserCircle className="w-7 h-7 text-muted-foreground" />}
                   </AvatarFallback>
                 </Avatar>
                 <span className="sr-only">Toggle user menu</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>{currentUser?.name || "My Account"}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link href="/dashboard/settings"><Settings className="mr-2 h-4 w-4" />Settings</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem disabled> {/* Disabled until implemented */}
                 <Bell className="mr-2 h-4 w-4" />Notifications
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" />Logout
               </DropdownMenuItem>
             </DropdownMenuContent>
