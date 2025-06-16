@@ -31,7 +31,8 @@ export default function RegisterPage() {
     }
     try {
       await register(name, email, password);
-      // Navigation is handled by the register function in AuthContext
+      // Navigation and user feedback (e.g., "pending verification") are handled by the register function in AuthContext
+      // toast({ title: "Registration Successful", description: "Please check your email for verification or wait for admin approval."});
     } catch (error) {
       console.error("Registration failed:", error);
       toast({ title: "Registration Failed", description: (error as Error).message || "An unexpected error occurred.", variant: "destructive" });
@@ -43,7 +44,7 @@ export default function RegisterPage() {
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold text-primary">Create Your Account</CardTitle>
-          <CardDescription>Join Nation Quest and start collaborating!</CardDescription>
+          <CardDescription>Join Nation Quest and start collaborating! New accounts require admin verification.</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-6">
@@ -113,3 +114,5 @@ export default function RegisterPage() {
     </div>
   );
 }
+
+    

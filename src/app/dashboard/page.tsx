@@ -1,10 +1,11 @@
 
 "use client";
 
+import React, { useState, useEffect } from 'react'; // Added useState and useEffect
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { BarChart, LineChart as LineChartIconLucide, PieChartIcon, Users, ListChecks, Activity, ArrowRight, Lightbulb } from "lucide-react"; // Renamed LineChart to avoid conflict
+import { BarChart, LineChart as LineChartIconLucide, PieChartIcon, Users, ListChecks, Activity, ArrowRight, Lightbulb, Tv } from "lucide-react";
 import Link from "next/link";
 import {
   ChartContainer,
@@ -13,8 +14,12 @@ import {
   ChartLegend,
   ChartLegendContent,
 } from "@/components/ui/chart"
-import { Bar, Line, Pie, ResponsiveContainer, Cell, PieLabelRenderProps, PieChart, LineChart } from "recharts"; // Added PieChart and LineChart
-import { useAuth } from "@/contexts/auth-context"; // Import useAuth
+import { Bar, Line, Pie, ResponsiveContainer, Cell, PieLabelRenderProps, PieChart, LineChart } from "recharts"; 
+import { useAuth } from "@/contexts/auth-context";
+import type { ProjectSpotlightData } from '@/types';
+
+const PROJECT_SPOTLIGHT_STORAGE_KEY = 'projectSpotlight_nationquest';
+
 
 const taskData = [
   { status: "To Do", count: 12, fill: "hsl(var(--chart-1))" },
@@ -45,20 +50,48 @@ const chartConfig = {
 
 
 export default function DashboardPage() {
-  const { currentUser } = useAuth(); // Get current user
+  const { currentUser } = useAuth(); 
   const totalTasks = taskData.reduce((acc, curr) => acc + curr.count, 0);
   const completedTasks = taskData.find(t => t.status === "Completed")?.count || 0;
   const completionPercentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+  const [spotlightData, setSpotlightData] = useState<ProjectSpotlightData>({
+    title: 'Project Spotlight: The Azure Glade',
+    description: 'Our current major focus is the development of the Azure Glade region. This involves new environmental assets, questlines, and NPC interactions.',
+    button1Text: 'View Project Details',
+    button1Link: '#',
+    button2Text: 'Contribute',
+    button2Link: '#',
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedSpotlight = localStorage.getItem(PROJECT_SPOTLIGHT_STORAGE_KEY);
+      if (storedSpotlight) {
+        try {
+          setSpotlightData(JSON.parse(storedSpotlight));
+        } catch (e) {
+          console.error("Failed to parse spotlight data from localStorage", e);
+          // Fallback to default if parsing fails
+           localStorage.removeItem(PROJECT_SPOTLIGHT_STORAGE_KEY); // Clear potentially corrupted data
+        }
+      }
+    }
+  }, []);
+
 
   return (
     <div className="grid gap-6 md:gap-8">
       <Card className="col-span-1 md:col-span-2 lg:col-span-3 shadow-lg">
         <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-2xl font-bold">Welcome back, {currentUser?.name || 'Developer'}!</CardTitle> {/* Use currentUser name */}
+          <CardTitle className="text-2xl font-bold">Welcome back, {currentUser?.name || 'Developer'}!</CardTitle> 
           <Activity className="h-6 w-6 text-primary" />
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground">Here's what's happening with Nation Quest today. Let's build something amazing!</p>
+          {currentUser?.role === 'guest' && (
+            <p className="mt-2 text-sm text-destructive">Your account is pending verification by an administrator.</p>
+          )}
         </CardContent>
       </Card>
 
@@ -99,8 +132,8 @@ export default function DashboardPage() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">128</div>
-            <p className="text-xs text-muted-foreground">+5 new members this week</p>
+            <div className="text-2xl font-bold">128</div> {/* Mock data */}
+            <p className="text-xs text-muted-foreground">+5 new members this week</p> {/* Mock data */}
             <Button variant="link" size="sm" className="px-0 mt-2" asChild>
               <Link href="/dashboard/community">Manage Community <ArrowRight className="ml-1 h-4 w-4"/></Link>
             </Button>
@@ -117,7 +150,7 @@ export default function DashboardPage() {
           <CardContent className="h-[300px]">
             <ChartContainer config={{}} className="w-full h-full">
               <ResponsiveContainer width="100%" height="100%">
-                <PieChart> {/* Ensured PieChart is imported and used */}
+                <PieChart> 
                   <ChartTooltip content={<ChartTooltipContent hideLabel />} />
                   <Pie
                     data={taskData}
@@ -147,7 +180,7 @@ export default function DashboardPage() {
           <CardContent className="h-[300px]">
             <ChartContainer config={chartConfig} className="w-full h-full">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={activityData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}> {/* Ensured LineChart is imported and used */}
+                <LineChart data={activityData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}> 
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Line type="monotone" dataKey="tasksCompleted" stroke={chartConfig.tasksCompleted.color} strokeWidth={2} dot={false} />
                   <Line type="monotone" dataKey="newTasks" stroke={chartConfig.newTasks.color} strokeWidth={2} dot={false} />
@@ -161,26 +194,34 @@ export default function DashboardPage() {
 
       <Card className="col-span-1 md:col-span-2 lg:col-span-3 bg-primary/10 border-primary/30 hover:shadow-md transition-shadow">
         <CardHeader>
-          <CardTitle className="text-primary">Project Spotlight: The Azure Glade</CardTitle>
+          <CardTitle className="text-primary flex items-center"><Tv className="mr-2 h-6 w-6"/>{spotlightData.title}</CardTitle>
         </CardHeader>
         <CardContent className="grid md:grid-cols-3 gap-4 items-center">
           <div className="md:col-span-1 w-full h-[200px] md:h-[300px] flex items-center justify-center bg-muted/50 rounded-md shadow-md">
-            <Lightbulb className="w-20 h-20 md:w-24 md:h-24 text-primary" />
+            <Lightbulb className="w-20 h-20 md:w-24 md:h-24 text-primary" data-ai-hint="idea concept"/>
           </div>
           <div className="md:col-span-2">
-            <p className="text-muted-foreground mb-2">
-              Our current major focus is the development of the Azure Glade region. This involves new environmental assets, questlines, and NPC interactions.
+            <p className="text-muted-foreground mb-4">
+              {spotlightData.description}
             </p>
-            <p className="text-sm text-muted-foreground mb-4">
-              Key progress: <strong>75% world-building complete</strong>, <strong>40% quest scripting done</strong>.
-            </p>
-            <div className="flex gap-2">
-              <Button>View Project Details</Button>
-              <Button variant="outline">Contribute</Button>
+            <div className="flex gap-2 flex-wrap">
+              {spotlightData.button1Text && spotlightData.button1Link && (
+                 <Button asChild>
+                    <Link href={spotlightData.button1Link}>{spotlightData.button1Text}</Link>
+                 </Button>
+              )}
+              {spotlightData.button2Text && spotlightData.button2Link && (
+                <Button variant="outline" asChild>
+                    <Link href={spotlightData.button2Link}>{spotlightData.button2Text}</Link>
+                </Button>
+              )}
             </div>
           </div>
         </CardContent>
       </Card>
+       <p className="text-sm text-muted-foreground text-center col-span-full">Dashboard data is currently mocked. Project Spotlight content can be edited by admins in the Admin Panel (changes saved to localStorage).</p>
     </div>
   );
 }
+
+    

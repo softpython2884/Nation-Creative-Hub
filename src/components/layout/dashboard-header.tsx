@@ -12,13 +12,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Bell, Settings, LogOut, UserCircle } from "lucide-react";
+import { Menu, Settings, LogOut, UserCircle, ShieldQuestion } from "lucide-react"; // Removed Bell, using NotificationDropdown
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import { Logo } from "@/components/common/logo";
 import { navItems } from "./sidebar-nav-items"; 
-import { useAuth } from "@/contexts/auth-context"; // Import useAuth
+import { useAuth } from "@/contexts/auth-context";
+import { NotificationDropdown } from "./notification-dropdown"; // Import NotificationDropdown
 
 export function DashboardHeader({
   children,
@@ -26,13 +27,20 @@ export function DashboardHeader({
   children?: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const pageTitle = navItems.find(item => item.href === pathname)?.title || "Dashboard";
-  const { currentUser, logout } = useAuth(); // Get currentUser and logout function
+  const { currentUser, logout } = useAuth(); 
+
+  // Determine page title, considering dynamic segments if any
+  const activeNavItem = navItems.find(item => 
+    pathname === item.href || (item.href !== "/dashboard" && pathname.startsWith(item.href))
+  );
+  const pageTitle = activeNavItem?.title || "Dashboard";
+
 
   const handleLogout = async () => {
     await logout();
-    // Router will redirect via AuthContext or DashboardLayout effect
   };
+
+  const userCanAccessAdmin = currentUser && (currentUser.role === 'admin' || currentUser.role === 'owner');
 
   return (
     <header className="flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 sticky top-0 z-30">
@@ -48,18 +56,23 @@ export function DashboardHeader({
             <Logo size="md"/>
           </div>
           <nav className="grid gap-2 text-lg font-medium p-4">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
-                  pathname === item.href ? "text-primary bg-muted" : "text-muted-foreground"
-                }`}
-              >
-                <item.icon className="h-5 w-5" />
-                {item.title}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              if (item.roles && !item.roles.includes(currentUser?.role || '')) {
+                return null; // Don't render if user doesn't have required role
+              }
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
+                    pathname === item.href || (item.href !== "/dashboard" && pathname.startsWith(item.href)) ? "text-primary bg-muted" : "text-muted-foreground"
+                  }`}
+                >
+                  <item.icon className="h-5 w-5" />
+                  {item.title}
+                </Link>
+              );
+            })}
           </nav>
         </SheetContent>
       </Sheet>
@@ -68,14 +81,7 @@ export function DashboardHeader({
         <h1 className="text-xl font-semibold hidden md:block">{pageTitle}</h1>
         <div className="ml-auto flex items-center gap-2">
           <ThemeToggle />
-          <Button variant="outline" size="icon" className="relative">
-            <Bell className="h-5 w-5" />
-            <span className="absolute -top-1 -right-1 flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
-            </span>
-            <span className="sr-only">Toggle notifications</span>
-          </Button>
+          <NotificationDropdown /> {/* Use the new NotificationDropdown component */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full">
@@ -88,14 +94,18 @@ export function DashboardHeader({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>{currentUser?.name || "My Account"}</DropdownMenuLabel>
+              <DropdownMenuLabel>{currentUser?.name || "My Account"} {currentUser && <span className="text-xs text-muted-foreground">({currentUser.role})</span>}</DropdownMenuLabel>
               <DropdownMenuSeparator />
+              {userCanAccessAdmin && (
+                <DropdownMenuItem asChild>
+                  <Link href="/dashboard/admin"><ShieldQuestion className="mr-2 h-4 w-4" />Admin Panel</Link>
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem asChild>
                 <Link href="/dashboard/settings"><Settings className="mr-2 h-4 w-4" />Settings</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem disabled> {/* Disabled until implemented */}
-                <Bell className="mr-2 h-4 w-4" />Notifications
-              </DropdownMenuItem>
+              {/* Placeholder for future notifications page link if needed */}
+              {/* <DropdownMenuItem asChild><Link href="/dashboard/notifications"><Bell className="mr-2 h-4 w-4" />Notifications</Link></DropdownMenuItem> */}
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" />Logout
@@ -108,3 +118,5 @@ export function DashboardHeader({
     </header>
   );
 }
+
+    

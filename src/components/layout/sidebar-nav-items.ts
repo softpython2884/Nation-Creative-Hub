@@ -1,5 +1,6 @@
+
 import type { LucideIcon } from "lucide-react";
-import { LayoutDashboard, ListChecks, Users, Settings, Plug, Palette, Rocket } from "lucide-react";
+import { LayoutDashboard, ListChecks, Users, Settings, Plug, ShieldQuestion, BookOpen, FolderKanban, MessageSquare } from "lucide-react"; // Added ShieldQuestion, BookOpen, FolderKanban, MessageSquare
 
 export interface NavItem {
   title: string;
@@ -9,6 +10,7 @@ export interface NavItem {
   disabled?: boolean;
   external?: boolean;
   items?: NavItem[];
+  roles?: string[]; // Optional: specify roles that can see this item
 }
 
 export const navItems: NavItem[] = [
@@ -23,9 +25,19 @@ export const navItems: NavItem[] = [
     icon: ListChecks,
   },
   {
+    title: "Projects", // New item
+    href: "/dashboard/projects",
+    icon: FolderKanban,
+  },
+  {
     title: "Community",
     href: "/dashboard/community",
     icon: Users,
+  },
+  {
+    title: "Forums", // New item
+    href: "/dashboard/forums",
+    icon: MessageSquare,
   },
   {
     title: "Integrations",
@@ -33,8 +45,16 @@ export const navItems: NavItem[] = [
     icon: Plug,
   },
   {
+    title: "Admin", // New Item
+    href: "/dashboard/admin",
+    icon: ShieldQuestion,
+    roles: ['admin', 'owner'] // Only visible to admin/owner
+  },
+  {
     title: "Settings",
     href: "/dashboard/settings",
     icon: Settings,
   }
 ];
+
+    

@@ -1,12 +1,11 @@
 
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"; // Added CardFooter
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Bell, MessageSquare, ShieldCheck, ExternalLink, Settings2 } from "lucide-react"; // Removed Users icon as it's not used
-// Removed Image from 'next/image' as it's not used
+import { Bell, MessageSquare, ShieldCheck, ExternalLink, Settings2 } from "lucide-react";
 
 // Mock Discord Icon SVG as lucide-react doesn't have it
 const DiscordIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -74,10 +73,10 @@ export default function IntegrationsPage() {
           <CardContent>
             <p className="text-sm text-muted-foreground mb-4">
               Our community forums are the central place for all Nation Quest discussions.
-              Participate in role-specific channels, general chat, or technical support threads.
+              Participate in role-specific channels, general chat, or technical support threads. (UI Placeholder)
             </p>
             <Button asChild variant="outline">
-              <a href="#" target="_blank" rel="noopener noreferrer">
+              <a href="/dashboard/forums" rel="noopener noreferrer">
                 Visit Forums <ExternalLink className="ml-2 h-4 w-4" />
               </a>
             </Button>
@@ -95,10 +94,10 @@ export default function IntegrationsPage() {
           <CardContent>
             <p className="text-sm text-muted-foreground mb-4">
               Link your Nation Quest account with Discord to receive instant notifications, participate in voice chats,
-              and get access to exclusive community channels.
+              and get access to exclusive community channels. (Feature not implemented)
             </p>
-            <Button>
-              <DiscordIcon className="mr-2 h-5 w-5" /> Connect to Discord
+            <Button disabled>
+              <DiscordIcon className="mr-2 h-5 w-5" /> Connect to Discord (Soon)
             </Button>
           </CardContent>
         </Card>
@@ -115,39 +114,41 @@ export default function IntegrationsPage() {
         <CardContent className="space-y-4">
           <p className="text-sm text-muted-foreground">
             At Nation Quest, we value every contribution. Your role can evolve based on your activity, skills demonstrated,
-            and leadership within the community. Start as an Adventurer and rise through the ranks!
+            and leadership within the community. Start as a Guest and aim for Owner!
           </p>
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div className="p-4 border rounded-md bg-muted/50">
-              <h4 className="font-semibold">Adventurer (New Member)</h4>
-              <p className="text-xs text-muted-foreground mt-1">Explore, learn, and start contributing to tasks.</p>
+              <h4 className="font-semibold">Guest</h4>
+              <p className="text-xs text-muted-foreground mt-1">New member, awaiting verification.</p>
             </div>
             <div className="p-4 border rounded-md bg-muted/50">
-              <h4 className="font-semibold">Contributor (Active Member)</h4>
+              <h4 className="font-semibold">Verified</h4>
+              <p className="text-xs text-muted-foreground mt-1">Verified member, can contribute to projects.</p>
+            </div>
+            <div className="p-4 border rounded-md bg-muted/50">
+              <h4 className="font-semibold">Contributor</h4>
               <p className="text-xs text-muted-foreground mt-1">Consistently contributes to projects and discussions.</p>
             </div>
             <div className="p-4 border rounded-md bg-muted/50">
-              <h4 className="font-semibold">Specialist (Skilled Role)</h4>
+              <h4 className="font-semibold">Specialist</h4>
               <p className="text-xs text-muted-foreground mt-1">Recognized expertise in areas like Design, Composing, Building, etc.</p>
             </div>
-            <div className="p-4 border rounded-md bg-muted/50">
-              <h4 className="font-semibold">Mentor (Experienced Guide)</h4>
-              <p className="text-xs text-muted-foreground mt-1">Helps guide new members and shares knowledge.</p>
-            </div>
-            <div className="p-4 border rounded-md bg-muted/50">
-              <h4 className="font-semibold">Coordinator (Team Lead)</h4>
-              <p className="text-xs text-muted-foreground mt-1">Leads specific projects or initiatives.</p>
-            </div>
              <div className="p-4 border rounded-md bg-primary/10 border-primary/30">
-              <h4 className="font-semibold text-primary">Legend (Visionary)</h4>
-              <p className="text-xs text-muted-foreground mt-1">Significantly shapes the direction of Nation Quest.</p>
+              <h4 className="font-semibold text-primary">Admin</h4>
+              <p className="text-xs text-muted-foreground mt-1">Manages users, content, and specific project areas.</p>
+            </div>
+             <div className="p-4 border rounded-md bg-primary/20 border-primary/50">
+              <h4 className="font-semibold text-primary">Owner</h4>
+              <p className="text-xs text-muted-foreground mt-1">Overall project lead with full administrative rights.</p>
             </div>
           </div>
            <p className="text-sm text-muted-foreground">
-            More details on role progression and benefits can be found in our community guidelines on the forums.
+            Role progression and specific permissions are managed by Admins/Owners. More details on the (upcoming) Forums.
           </p>
         </CardContent>
       </Card>
     </div>
   );
 }
+
+    
