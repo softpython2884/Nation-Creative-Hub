@@ -37,20 +37,22 @@ export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-background to-secondary/30 dark:from-background dark:to-primary/10">
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-center gap-8">
-          <Logo />
-          <nav className="flex items-center gap-4">
-            <Button variant="ghost" asChild>
-              <Link href="#features">Features</Link>
-            </Button>
-            <Button variant="ghost" asChild>
-              <Link href="#community">Community</Link>
-            </Button>
-            <ThemeToggle />
-            <Button asChild>
-              <Link href="/auth/login">Enter Hub</Link>
-            </Button>
-          </nav>
+        <div className="container flex h-16 items-center justify-center">
+          <div className="flex items-center gap-x-8">
+            <Logo />
+            <nav className="flex items-center gap-x-4">
+              <Button variant="ghost" asChild>
+                <Link href="#features">Features</Link>
+              </Button>
+              <Button variant="ghost" asChild>
+                <Link href="#community">Community</Link>
+              </Button>
+              <ThemeToggle />
+              <Button asChild>
+                <Link href="/auth/login">Enter Hub</Link>
+              </Button>
+            </nav>
+          </div>
         </div>
       </header>
 
@@ -140,6 +142,10 @@ export default function HomePage() {
                   </Button>
                 </div>
               </div>
+              {/* Placeholder for an image or illustration if desired in the future */}
+              {/* <div className="flex items-center justify-center">
+                <Users className="w-64 h-64 text-primary/30" data-ai-hint="community teamwork" />
+              </div> */}
             </div>
           </div>
         </section>
